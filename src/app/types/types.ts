@@ -7,16 +7,15 @@ type User = {
   source: string;
   is_active: boolean;
   profile: any;
+  date_joined?:string
 };
 
 type AuthContextType = {
   user: User | null;
-  profile: User | null;
   login: (data: LoginInput) => Promise<void>;
   register: (data: RegisterInput) => Promise<void>;
   logout: () => void;
   loading: boolean;
-  profileLoading:boolean
 };
 
 type LoginInput = {

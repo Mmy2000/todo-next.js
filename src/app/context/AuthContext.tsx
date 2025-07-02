@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [profileLoading, setProfileLoading] = useState<boolean>(false);
   const router = useRouter();
 
  
@@ -38,7 +37,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("refresh", res?.data?.refresh);
       localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
       setUser(res?.data?.user_data);
-      await fetchProfile();
       toast.success(res?.message);
       router.push("/");
     } catch (err) {
@@ -62,7 +60,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("refresh", res?.data?.refresh);
       localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
       setUser(res?.data?.user_data);
-      await fetchProfile();
       toast.success(res?.message);
       router.push("/activate"); // Optional
     } catch (err) {
@@ -73,25 +70,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const fetchProfile = async () => {
-    setProfileLoading(true)
-    try{
-      const res = await apiServiceCall({
-        url: "/api/users/profile/",
-        method: "get",
-        endpoint: "profile",
-        
-      });
-      setProfile(res?.data);
-
-    }catch(err){
-      console.log(err);
-      
-    }finally {
-      setProfileLoading(false);
-    }
-    
-  }
 
   const logout = () => {
     localStorage.removeItem("access");
@@ -109,7 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, profile, profileLoading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

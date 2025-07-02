@@ -51,7 +51,7 @@ export function LoginDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" >Login</Button>
+        <Button variant="secondary" >Login</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -59,7 +59,7 @@ export function LoginDialog() {
           <DialogDescription>Access your account</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <Input
               placeholder="Email or Username"

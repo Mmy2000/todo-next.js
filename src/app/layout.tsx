@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/app/providers/theme-provider";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
+import { ProfileContextProvider } from "./context/ProfileContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,31 +33,31 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster
-              position="bottom-right"
-              theme="dark"
-              toastOptions={{
-                
-                duration: 4000,
-                style: {
-                  padding: "1rem",
-                  fontSize: "0.95rem",
-                  fontWeight: "500",
-                  
-                },
-              }}
-            />
-            <main className="flex flex-col min-h-[calc(100vh-3.5rem-1px)]">
-              <Navbar />
-              <div className="flex-1 flex flex-col h-full">{children}</div>
-            </main>
-          </ThemeProvider>
+          <ProfileContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster
+                position="bottom-right"
+                theme="dark"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    padding: "1rem",
+                    fontSize: "0.95rem",
+                    fontWeight: "500",
+                  },
+                }}
+              />
+              <main className="flex flex-col min-h-[calc(100vh-3.5rem-1px)]">
+                <Navbar />
+                <div className="flex-1 flex flex-col h-full">{children}</div>
+              </main>
+            </ThemeProvider>
+          </ProfileContextProvider>
         </AuthProvider>
       </body>
     </html>

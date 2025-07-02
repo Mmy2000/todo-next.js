@@ -57,7 +57,7 @@ export function RegisterDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary">Register</Button>
+        <Button variant="default">Register</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

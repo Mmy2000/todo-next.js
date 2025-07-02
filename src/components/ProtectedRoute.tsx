@@ -1,8 +1,8 @@
-// components/ProtectedRoute.tsx
 "use client";
+
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProtectedRoute({
   children,
@@ -11,12 +11,20 @@ export default function ProtectedRoute({
 }) {
   const { user } = useAuth();
   const router = useRouter();
+  const [hasAccess, setHasAccess] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!user) router.push("/login");
-  }, [user]);
+    const access = localStorage.getItem("access");
+    if (!access) {
+      router.push("/");
+      setHasAccess(false);
+    } else {
+      setHasAccess(true);
+    }
+  }, [router]);
 
-  if (!user) return null;
+  // Don't render until we've determined access
+  if (hasAccess === null || !user) return null;
 
   return <>{children}</>;
 }
