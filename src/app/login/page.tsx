@@ -27,14 +27,14 @@ export default function LoginPage() {
         placeholder="Email or Username"
         value={email_or_username}
         onChange={(e) => setEmail(e.target.value)}
-        className="mb-3"
+        className="mb-4"
       />
       <Input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="mb-3"
+        className="mb-4"
       />
       <Button
         variant="outline"

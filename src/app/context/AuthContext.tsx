@@ -6,37 +6,6 @@ import { useRouter } from "next/navigation";
 import apiServiceCall from "../service/apiServiceCall";
 import { toast } from "sonner";
 
-type User = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  username: string;
-  source: string;
-  is_active: boolean;
-  profile: any;
-};
-
-type AuthContextType = {
-  user: User | null;
-  login: (data: LoginInput) => Promise<void>;
-  register: (data: RegisterInput) => Promise<void>;
-  logout: () => void;
-  loading: boolean;
-};
-
-type LoginInput = {
-  email_or_username: string;
-  password: string;
-};
-
-type RegisterInput = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  password2: string;
-};
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -48,13 +17,12 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [profileLoading, setProfileLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(JSON.parse(savedUser));
-  }, []);
+ 
 
   const login = async ({ email_or_username, password }: LoginInput) => {
     setLoading(true);
@@ -70,6 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("refresh", res?.data?.refresh);
       localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
       setUser(res?.data?.user_data);
+      await fetchProfile();
       toast.success(res?.message);
       router.push("/");
     } catch (err) {
@@ -93,6 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("refresh", res?.data?.refresh);
       localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
       setUser(res?.data?.user_data);
+      await fetchProfile();
       toast.success(res?.message);
       router.push("/activate"); // Optional
     } catch (err) {
@@ -103,16 +73,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const fetchProfile = async () => {
+    setProfileLoading(true)
+    try{
+      const res = await apiServiceCall({
+        url: "/api/users/profile/",
+        method: "get",
+        endpoint: "profile",
+        
+      });
+      setProfile(res?.data);
+
+    }catch(err){
+      console.log(err);
+      
+    }finally {
+      setProfileLoading(false);
+    }
+    
+  }
+
   const logout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     localStorage.removeItem("user");
     setUser(null);
-    router.push("/login");
+    router.push("/");
   };
 
+   useEffect(() => {
+     const savedUser = localStorage.getItem("user");
+     if (savedUser) {
+      setUser(JSON.parse(savedUser));
+     };
+   }, []);
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, profile, profileLoading }}>
       {children}
     </AuthContext.Provider>
   );

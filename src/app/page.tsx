@@ -11,9 +11,9 @@ export default function Home() {
       <div className="">
         <MaxWidthWrapper className="pb-24 pt-10 ">
           <Link href="/todo">
-            <Button variant="default" className="cursor-pointer">
-              <ArrowRight size={14} className="mr-1" />
+            <Button variant="default" >
               Todos
+              <ArrowRight size={14} className="ml-1 h-4 w-4" />
             </Button>
           </Link>
         </MaxWidthWrapper>

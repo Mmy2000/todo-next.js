@@ -51,7 +51,7 @@ export function LoginDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
+        <Button variant="outline" >Login</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -93,8 +93,13 @@ export function LoginDialog() {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+            <Button
+              isLoading={loading}
+              loadingText="Logging in"
+              type="submit"
+              disabled={loading}
+            >
+              Login
             </Button>
           </DialogFooter>
         </form>
