@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/app/providers/theme-provider";
+import { AuthProvider } from "./context/AuthContext";
+import Navbar from "@/components/Navbar";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +31,33 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="flex flex-col min-h-[calc(100vh-3.5rem-1px)]">
-            <div className="flex-1 flex flex-col h-full">{children}</div>
-          </main>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Toaster
+              position="bottom-right"
+              theme="dark"
+              toastOptions={{
+                
+                duration: 4000,
+                style: {
+                  padding: "1rem",
+                  fontSize: "0.95rem",
+                  fontWeight: "500",
+                  
+                },
+              }}
+            />
+            <main className="flex flex-col min-h-[calc(100vh-3.5rem-1px)]">
+              <Navbar />
+              <div className="flex-1 flex flex-col h-full">{children}</div>
+            </main>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
