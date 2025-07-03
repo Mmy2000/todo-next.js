@@ -1,7 +1,7 @@
 "use client";
 
 import ProtectedRoute from "@/components/ProtectedRoute";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "@/components/ui/Spinner";
 import { useProfile } from "../context/ProfileContext";
@@ -9,17 +9,27 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import MaxWidthWrapper from "@/components/ui/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
-
+import { Toggle } from "@/components/ui/toggle";
 
 const page = () => {
     
   const { profile, loading, error } = useProfile();
+  const [showCoverImage, setShowCoverImage] = useState(false);
   useEffect(() => {
+    const storedValue = localStorage.getItem("showCoverImage");
+    if (storedValue !== null) {
+      setShowCoverImage(JSON.parse(storedValue));
+    }
   }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("showCoverImage", JSON.stringify(showCoverImage));
+  }, [showCoverImage]);
 
   if (loading)
     return (
-      <div className="flex items-center w-full justify-center">
+      <div className="flex items-center w-full justify-center mt-5">
         <Spinner size={36} color="border-t-zinc-700 dark:border-t-zinc-300" />
       </div>
     );
@@ -28,24 +38,28 @@ const page = () => {
         <h4>{error}</h4>
       </div>;
     }
-    console.log(profile);
+    const handleCoverImage = ()=>{
+
+    }
+    const coverStyle = showCoverImage
+      ? {
+          backgroundImage: `linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.6) 0%,
+          rgba(0, 0, 0, 0.3) 40%,
+          rgba(0, 0, 0, 0.6) 100%
+        ), url(${profile?.profile?.cover_picture || "/default-cover.jpg"})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }
+      : {};
     
   return (
     <ProtectedRoute>
       <MaxWidthWrapper>
         <motion.div
-          style={{
-            backgroundImage: `linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.3) 40%,
-      rgba(0, 0, 0, 0.6) 100%
-    ), 
-    url(${profile?.profile?.cover_picture || "/default-cover.jpg"})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          style={coverStyle}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -65,9 +79,16 @@ const page = () => {
                 className="w-36 h-36 rounded-full border-4 object-cover border-zinc-600 dark:border-zinc-500 shadow-lg"
                 whileHover={{ scale: 1.1 }}
               />
-              <h1 className="text-3xl font-extrabold text-gray-200 dark:text-gray-100">
+              <h1 className="text-3xl font-extrabold text-zinc-700 dark:text-gray-100">
                 {profile?.profile?.full_name}
               </h1>
+              <Toggle
+                pressed={showCoverImage}
+                onPressedChange={() => setShowCoverImage((prev) => !prev)}
+                variant="outline"
+              >
+                Display Cover Image
+              </Toggle>
             </div>
             <motion.div
               className="mt-4 p-6 bg-white/60 dark:bg-zinc-800/60 backdrop-blur-md rounded-xl shadow-md flex flex-col items-center space-y-4"

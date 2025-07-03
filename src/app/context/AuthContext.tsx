@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
       setUser(res?.data?.user_data);
       toast.success(res?.message);
-      router.push("/");
+      router.push("/profile");
     } catch (err) {
       throw err;
     } finally {
