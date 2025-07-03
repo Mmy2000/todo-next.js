@@ -7,10 +7,12 @@ import { LoginDialog } from "@/components/LoginDialog";
 import { RegisterDialog } from "@/components/RegisterDialog";
 import MaxWidthWrapper from "./ui/MaxWidthWrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useProfile } from "@/app/context/ProfileContext";
 
 const Navbar = () => {
   // Replace with real authentication logic
   const { user, logout } = useAuth();
+  const { profile } = useProfile();
   const handleLogout = () => {
     // Add your logout logic here
     logout();
@@ -40,7 +42,7 @@ const Navbar = () => {
                 <Link href="/profile">
                   <Avatar>
                     <AvatarImage
-                      src={user?.profile?.profile_picture}
+                      src={profile?.profile?.profile_picture}
                       alt="User avatar"
                     />
                     <AvatarFallback>CN</AvatarFallback>
