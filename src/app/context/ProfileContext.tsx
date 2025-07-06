@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { useAuth } from "./AuthContext";
 import apiServiceCall from "../service/apiServiceCall";
+import { User } from "../types";
 
 // Assuming you already have a User type defined somewhere
 interface ProfileContextType {

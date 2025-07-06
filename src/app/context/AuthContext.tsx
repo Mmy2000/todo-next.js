@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import apiServiceCall from "../service/apiServiceCall";
 import { toast } from "sonner";
+import { AuthContextType, LoginInput, RegisterInput, User } from "../types";
 
 
 const AuthContext = createContext<AuthContextType | null>(null);

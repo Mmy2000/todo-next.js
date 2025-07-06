@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   id: number;
   first_name: string;
   last_name: string;
@@ -10,7 +10,7 @@ type User = {
   date_joined?:string
 };
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null;
   login: (data: LoginInput) => Promise<void>;
   register: (data: RegisterInput) => Promise<void>;
@@ -18,12 +18,12 @@ type AuthContextType = {
   loading: boolean;
 };
 
-type LoginInput = {
+export type LoginInput = {
   email_or_username: string;
   password: string;
 };
 
-type RegisterInput = {
+export type RegisterInput = {
   first_name: string;
   last_name: string;
   email: string;
