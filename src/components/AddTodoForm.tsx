@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -27,69 +26,67 @@ import {
 import { Input } from "@/components/ui/input";
 import { TodoFormValues, todoFormSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pen,Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Textarea } from "./ui/textarea";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { ITodo } from "@/app/interfaces";
+import { useForm } from "react-hook-form";
+import { Checkbox } from "./ui/checkbox";
+import { Textarea } from "./ui/textarea";
+import { Button } from "@/components/ui/button";
 import apiServiceCall from "@/app/service/apiServiceCall";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
-
-const EditTodoForm = ({ todo }: { todo: ITodo }) => {
-  const queryClient = useQueryClient();
+const AddTodoForm = () => {
+    const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const defaultValues: Partial<TodoFormValues> = {
-    title: todo.title,
-    description: todo.description as string,
-    status: todo.status as string,
-    priority: todo.priority as string,
-  };  
+    title: "",
+    description: "",
+    status: "",
+    priority: "",
+  };
 
-  // const todos = await getTodoListAction();
   const form = useForm<TodoFormValues>({
     resolver: zodResolver(todoFormSchema),
     defaultValues,
     mode: "onChange",
   });
 
-  const onSubmit = async (data: TodoFormValues) => {
+  const onSubmit = async ({ title, description, status,priority }: TodoFormValues) => {
     setLoading(true);
-    try{
-
-        const res = await apiServiceCall({
-          url: `api/todo/${todo.id}/`,
-          method: "PUT",
-          body: data,
-          endpoint: "todo",
-        });
-        queryClient.invalidateQueries({ queryKey: ["todos"] });
-        toast.success(res?.message);
-
-    }catch (err) {
-        toast.error((err as any)?.message || "An error occurred");
+    try {
+      const res = await apiServiceCall({
+        url: `api/todo/`,
+        method: "POST",
+        body: { title, description, status, priority },
+        endpoint: "todo",
+      });
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      toast.success(res?.message);
+    } catch (err) {
+        toast.error(
+          (err as any)?.message || "An error occurred"
+        )
       throw err;
     } finally {
       setLoading(false);
       setOpen(false);
     }
+    
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild className="ml-auto">
-        <Button
-          variant={"outline"}
-          className="cursor-pointer bg-amber-300 hover:bg-amber-400"
-        >
-          <Pen size={16} />
+        <Button className="mb-4">
+          <Plus size={14} className="mr-1" />
+          New Todo
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit this Todo</DialogTitle>
+          <DialogTitle>Add a new Todo</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <Form {...form}>
@@ -204,4 +201,4 @@ const EditTodoForm = ({ todo }: { todo: ITodo }) => {
   );
 };
 
-export default EditTodoForm;
+export default AddTodoForm;
