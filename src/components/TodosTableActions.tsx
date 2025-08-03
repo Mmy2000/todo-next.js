@@ -7,6 +7,7 @@ import Spinner from "./ui/Spinner";
 import apiServiceCall from "@/app/service/apiServiceCall";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import EditTodoForm from "./EditTodoForm";
 
 const TodosTableActions = ({ todo }: { todo: ITodo }) => {
   const queryClient = useQueryClient();
@@ -31,14 +32,13 @@ const TodosTableActions = ({ todo }: { todo: ITodo }) => {
 
   return (
     <>
-      <Button>
-        <Pen size={16} />
-      </Button>
+      <EditTodoForm todo={todo} />
       <Button
         onClick={() => deleteMutation.mutate(todo.id)}
         size={"icon"}
         variant={"destructive"}
         disabled={deleteMutation.isPending}
+        className="cursor-pointer"
       >
         {deleteMutation.isPending ? <Spinner size={22} /> : <Trash size={16} />}
       </Button>

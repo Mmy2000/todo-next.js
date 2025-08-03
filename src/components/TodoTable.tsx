@@ -12,11 +12,17 @@ import {
 import MaxWidthWrapper from "./ui/MaxWidthWrapper";
 import TodosTableActions from "./TodosTableActions";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Pen, Plus } from "lucide-react";
+
 
 export default function TodosTable({ todos }: { todos: ITodo[] }) {
 
   return (
     <MaxWidthWrapper>
+      <Button className="mb-10 font-semibold">
+        New ToDo <Plus size={16} />
+      </Button>
       <Table>
         <TableCaption>A list of your todos.</TableCaption>
         <TableHeader>

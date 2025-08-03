@@ -18,12 +18,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { loginSchema } from "@/schema";
 
-// 1. Define schema
-const loginSchema = z.object({
-  email_or_username: z.string().min(3, "Email or Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
