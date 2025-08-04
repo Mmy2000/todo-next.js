@@ -18,11 +18,8 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-
- 
 
   const login = async ({ email_or_username, password }: LoginInput) => {
     setLoading(true);
@@ -55,17 +52,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         method: "POST",
         body: data,
         endpoint: "register",
-      });
-
-      localStorage.setItem("access", res?.data?.access);
-      localStorage.setItem("refresh", res?.data?.refresh);
-      localStorage.setItem("user", JSON.stringify(res?.data?.user_data));
-      setUser(res?.data?.user_data);
+      });      
+      localStorage.setItem("activationEmail", res?.data?.user_data?.email);
       toast.success(res?.message);
       router.push("/activate"); // Optional
     } catch (err) {
-      console.error("Register error:", err);
-      throw err;
+      toast.error((err as any)?.data.email || "An error occurred");
     } finally {
       setLoading(false);
     }

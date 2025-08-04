@@ -18,23 +18,9 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import React from "react";
-import MaxWidthWrapper from "./ui/MaxWidthWrapper";
 import { X } from "lucide-react";
+import { Filters, TodosFilterProps } from "@/app/types";
 
-type Filters = {
-  status: string;
-  priority: string;
-  start_date: string;
-  end_date: string;
-  search: string;
-};
-
-type TodosFilterProps = {
-  filters: Filters;
-  onChange: (updatedFilters: Filters) => void;
-  onApply: () => void;
-  clearFilters:() => void;
-};
 
 const TodosFilter: React.FC<TodosFilterProps> = ({
   filters,

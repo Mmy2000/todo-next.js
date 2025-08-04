@@ -30,3 +30,18 @@ export type RegisterInput = {
   password: string;
   password2: string;
 };
+
+export type Filters = {
+  status: string;
+  priority: string;
+  start_date: string;
+  end_date: string;
+  search: string;
+};
+
+export type TodosFilterProps = {
+  filters: Filters;
+  onChange: (updatedFilters: Filters) => void;
+  onApply: () => void;
+  clearFilters:() => void;
+};

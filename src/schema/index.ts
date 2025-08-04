@@ -34,4 +34,17 @@ export const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+export const registerSchema = z
+  .object({
+    first_name: z.string().min(2, "First name is required"),
+    last_name: z.string().min(2, "Last name is required"),
+    email: z.string().email("Enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    password2: z.string(),
+  })
+  .refine((data) => data.password === data.password2, {
+    path: ["password2"],
+    message: "Passwords do not match",
+  });
+
 export type TodoFormValues = z.infer<typeof todoFormSchema>;

@@ -16,21 +16,8 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "@/schema";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils"; // optional utility for conditional classNames
-
-const registerSchema = z
-  .object({
-    first_name: z.string().min(2, "First name is required"),
-    last_name: z.string().min(2, "Last name is required"),
-    email: z.string().email("Enter a valid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    password2: z.string(),
-  })
-  .refine((data) => data.password === data.password2, {
-    path: ["password2"],
-    message: "Passwords do not match",
-  });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -48,9 +35,8 @@ export function RegisterDialog() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser(data);
-      toast.success("Account created successfully!");
     } catch (err: any) {
-      toast.error(err?.message || "Registration failed");
+      toast.error(err?.message || "register failed");
     }
   };
 
