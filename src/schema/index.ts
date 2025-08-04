@@ -47,4 +47,13 @@ export const registerSchema = z
     message: "Passwords do not match",
   });
 
+export const resetSchema = z.object({
+  email: z.string().email("Must be a valid email"),
+});
+
+export const verifySchema = z.object({
+  otp: z.string().min(4, "OTP is required"),
+  new_password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 export type TodoFormValues = z.infer<typeof todoFormSchema>;

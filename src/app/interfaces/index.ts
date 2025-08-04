@@ -6,3 +6,19 @@ export interface ITodo {
   priority: string;
   created_at?: Date;
 }
+
+export interface LoginFormStepProps {
+  onForgotPassword: () => void;
+  onSuccess?: () => void;
+}
+
+export interface ResetPasswordFormStepProps {
+  onBack: () => void;
+  onSuccess?: (email: string) => void;
+}
+
+export interface ResetPasswordVerifyStepProps {
+  email: string;
+  onBack: () => void;
+  onSuccess?: () => void;
+}

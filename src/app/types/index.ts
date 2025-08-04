@@ -45,3 +45,5 @@ export type TodosFilterProps = {
   onApply: () => void;
   clearFilters:() => void;
 };
+
+export type Step = "login" | "reset" | "verify";

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/ModeToggle";
 import { useAuth } from "@/app/context/AuthContext";
-import { LoginDialog } from "@/components/LoginDialog";
 import { RegisterDialog } from "@/components/RegisterDialog";
 import MaxWidthWrapper from "./ui/MaxWidthWrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useProfile } from "@/app/context/ProfileContext";
+import { StepperAuthDialog } from "./StepperAuthDialog";
 
 const Navbar = () => {
   // Replace with real authentication logic
@@ -34,7 +34,7 @@ const Navbar = () => {
             <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800 hidden sm:block" />
             {!user ? (
               <>
-                <LoginDialog />
+                <StepperAuthDialog/>
                 <RegisterDialog />
               </>
             ) : (
