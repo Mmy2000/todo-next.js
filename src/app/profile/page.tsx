@@ -21,6 +21,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import apiServiceCall from "../service/apiServiceCall";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import ChangePassword from "@/components/ChangePassword";
 
 const page = () => {
   const { profile, loading, error, setProfile } = useProfile();
@@ -259,19 +268,12 @@ const page = () => {
                 Manage Your Account
               </h2>
               <div className="flex space-x-4 items-center">
-                {/* Orders Button */}
                 <Link href="/todo">
                   <Button variant="default" className="">
                     ToDos
                   </Button>
                 </Link>
-
-                {/* Change Password Button */}
-                {/* <Link to="/profile/change-password"> */}
-                <Button variant="outline" size={"lg"}>
-                  Change Password
-                </Button>
-                {/* </Link> */}
+                <ChangePassword/>
               </div>
             </motion.div>
             <motion.div
@@ -369,8 +371,8 @@ const page = () => {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               Edit Profile
             </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Input
                     placeholder="First Name"
@@ -426,13 +428,45 @@ const page = () => {
                   />
                 </div>
                 <div>
-                  <Input
-                    placeholder="Date of Birth"
-                    name="date_of_birth"
-                    value={formData.date_of_birth}
-                    onChange={handleChange}
-                    type="date"
-                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="secondary"
+                        className="w-[180px] justify-start text-left"
+                      >
+                        {formData.date_of_birth ? (
+                          formData.date_of_birth
+                        ) : (
+                          <span className="text-muted-foreground">
+                            Date of Birth
+                          </span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          formData.date_of_birth
+                            ? new Date(formData.date_of_birth)
+                            : undefined
+                        }
+                        onSelect={(date) => {
+                          if (date) {
+                            const formatted = format(date, "yyyy-MM-dd");
+                            setFormData((prev) => ({
+                              ...prev,
+                              date_of_birth: formatted,
+                            }));
+                          }
+                        }}
+                        fromYear={1900}
+                        toYear={new Date().getFullYear()}
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div>
                   <Select
